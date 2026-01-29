@@ -17,7 +17,7 @@ class JobCreateRequest(BaseModel):
     workflow: WorkflowName = "agent_job"
     input: Dict[str, Any] = Field(default_factory=dict)
     steps: List[str] = Field(
-        default_factory=lambda: ["validate_input", "run_agent", "validade_output"]
+        default_factory=lambda: ["validate_input", "run_agent", "validate_output"]
     )
 
 #The response schema defines the exact shape we return so clients get a stable contract and we do not accidentally leak internal fields.
@@ -35,13 +35,13 @@ JOBS: Dict[UUID, JobCreateResponse] = {}
 def create_job(req: JobCreateRequest) -> JobCreateResponse:
     # Accept only validate input
     # Generate a new job id
-    job_id = uuid4(),
+    job_id = uuid4()
 
     job = JobCreateResponse(
-    job_id = job_id,
-    workflow = req.workflow,
-    status = "queued",     # Set status to queued 
-    steps = req.steps
+    job_id=job_id,
+    workflow=req.workflow,
+    status="queued",     # Set status to queued 
+    steps=req.steps
     )
     # Persist in memory
     JOBS[job_id] = job
